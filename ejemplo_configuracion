@@ -1,0 +1,23 @@
+server {
+  listen 80;
+  listen [::]:80;
+
+  server_name miveterinaria.cl;
+  root /home/ubuntu/m2_carts/current/public;
+
+  passenger_enabled on;
+  passenger_app_env production;
+
+  location /cable {
+    passenger_app_group_name store2a_websocket;
+    passenger_force_max_concurrent_requests_per_process 0;
+  }
+
+  # Permite cargar archivos máximo de 100MB
+  client_max_body_size 100m;
+
+  location ~ ^/(assets|packs) {
+    expires max;
+    gzip_static on;
+  }
+}
